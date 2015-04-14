@@ -26,30 +26,30 @@ public class GamePlay implements Serializable {
 	public int coinBlocksDestroyed; //number of coin block destroyed
 	public int powerBlocksDestroyed; //number of power block destroyed
 	public int kickedShells; //number of shells Mario kicked
-	public int enemyKillByFire; //number of enemies killed by shooting them
-	public int enemyKillByKickingShell; //number of enemies killed by kicking a shell on them
+	public int enemyKillByFire; //number of enemies killed by shooting them --------------------------
+	public int enemyKillByKickingShell; //number of enemies killed by kicking a shell on them --------
 	public int totalTimeLittleMode; //total time spent in little mode
 	public int totalTimeLargeMode; //total time spent in large mode
 	public int totalTimeFireMode; //total time spent in fire mode
 	public int timesSwichingPower; //number of Times Switched Between Little, Large or Fire Mario
 	public double aimlessJumps; //number of jumps without a reason
-	public double percentageBlocksDestroyed; //percentage of all blocks destroyed
-	public double percentageCoinBlocksDestroyed; //percentage of coin blocks destroyed
-	public double percentageEmptyBlockesDestroyed; //percentage of empty blocks destroyed
-	public double percentagePowerBlockDestroyed; //percentage of power blocks destroyed
-	public double timesOfDeathByFallingIntoGap; //number of death by falling into a gap
+	public double percentageBlocksDestroyed; //percentage of all blocks destroyed --------------------
+	public double percentageCoinBlocksDestroyed; //percentage of coin blocks destroyed ---------------
+	public double percentageEmptyBlockesDestroyed; //percentage of empty blocks destroyed ------------
+	public double percentagePowerBlockDestroyed; //percentage of power blocks destroyed --------------
+	public double timesOfDeathByFallingIntoGap; //number of death by falling into a gap --------------
 	public int totalEnemies; //total number of enemies
 	public int totalEmptyBlocks; //total number of empty blocks
 	public int totalCoinBlocks; //total number of coin blocks
 	public int totalpowerBlocks; //total number of power blocks
 	public int totalCoins; //total number of coins
-	public int timesOfDeathByRedTurtle; //number of times Mario died by red turtle
-	public int timesOfDeathByGoomba; //number of times Mario died by Goomba
-	public int timesOfDeathByGreenTurtle; //number of times Mario died by green turtle
-	public int timesOfDeathByArmoredTurtle; //number of times Mario died by Armored turtle
-	public int timesOfDeathByJumpFlower; //number of times Mario died by Jump Flower
-	public int timesOfDeathByCannonBall; //number of time Mario died by Cannon Ball
-	public int timesOfDeathByChompFlower; //number of times Mario died by Chomp Flower
+	public int timesOfDeathByRedTurtle; //number of times Mario died by red turtle -------------------
+	public int timesOfDeathByGoomba; //number of times Mario died by Goomba --------------------------
+	public int timesOfDeathByGreenTurtle; //number of times Mario died by green turtle ---------------
+	public int timesOfDeathByArmoredTurtle; //number of times Mario died by Armored turtle -----------
+	public int timesOfDeathByJumpFlower; //number of times Mario died by Jump Flower -----------------
+	public int timesOfDeathByCannonBall; //number of time Mario died by Cannon Ball ------------------
+	public int timesOfDeathByChompFlower; //number of times Mario died by Chomp Flower ---------------
 	public int RedTurtlesKilled; //number of Red Turtle Mario killed
 	public int GreenTurtlesKilled;//number of Green Turtle Mario killed
 	public int ArmoredTurtlesKilled; //number of Armored Turtle Mario killed
