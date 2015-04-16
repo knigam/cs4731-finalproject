@@ -22,4 +22,9 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		return null;
 	}
 
+	//this method needs to be instantiated
+	public double scoreLevel(LevelInterface level){
+		return 0.0;
+	}
+
 }
