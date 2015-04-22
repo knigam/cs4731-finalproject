@@ -68,18 +68,18 @@ public class MyLevel extends Level{
 	    		playerMetrics.JumpFlowersKilled +
 	    		playerMetrics.ChompFlowersKilled;
 
-	    	thresholds.put("percentageFireKills", new int[]{2,10});
-	    	thresholds.put("percentageShellKills", new int[]{2,10});
-	    	thresholds.put("percentageBlockDestroyed ", new int[]{2,10});
-	    	thresholds.put("percentageEmptyBlocksDestroyed ", new int[]{2,10});
-	    	thresholds.put("percentagePowerBlocksDestroyed ", new int[]{2,10});
-	    	thresholds.put("percentageGapDeaths", new int[]{2,10});
-	    	thresholds.put("percentageRedTurtleDeaths", new int[]{2,10});
-	    	thresholds.put("percentageGreenTurtleDeaths", new int[]{2,10});
-	    	thresholds.put("percentageGoombaDeaths", new int[]{2,10});
-	    	thresholds.put("percentageJumpFlowerDeaths", new int[]{2,10});
-	    	thresholds.put("percentageCannonBallDeaths", new int[]{2,10});
-	    	thresholds.put("percentageChompFlowerDeaths", new int[]{2,10});
+	    	thresholds.put("percentageFireKills", new int[]{30,10});
+	    	thresholds.put("percentageShellKills", new int[]{30,10});
+	    	thresholds.put("percentageBlockDestroyed ", new int[]{30,10});
+	    	thresholds.put("percentageEmptyBlocksDestroyed ", new int[]{30,10});
+	    	thresholds.put("percentagePowerBlocksDestroyed ", new int[]{50,10});
+	    	thresholds.put("percentageGapDeaths", new int[]{20,10});
+	    	thresholds.put("percentageRedTurtleDeaths", new int[]{20,10});
+	    	thresholds.put("percentageGreenTurtleDeaths", new int[]{10,10});
+	    	thresholds.put("percentageGoombaDeaths", new int[]{20,10});
+	    	thresholds.put("percentageJumpFlowerDeaths", new int[]{10,10});
+	    	thresholds.put("percentageCannonBallDeaths", new int[]{10,10});
+	    	thresholds.put("percentageChompFlowerDeaths", new int[]{10,10});
 	    }
 
 	    public void creat(long seed, int difficulty, int type)

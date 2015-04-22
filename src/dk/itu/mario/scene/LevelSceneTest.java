@@ -69,8 +69,11 @@ import dk.itu.mario.res.ResourcesManager;
 		        		String detailedInfo = FileHandler.readFile("DetailedInfo.txt");
 		                
 		              }
-			        	else
-		        		currentLevel = new RandomLevel(320, 15, levelSeed, levelDifficulty,levelType);
+			        	else{
+			        	GamePlay gp = new GamePlay();
+			        	gp = gp.read("player.txt");
+		        		currentLevel = new RandomLevel(320, 15, levelSeed, levelDifficulty,levelType, gp);
+		        		}
 
 		        try {
 					 level = currentLevel.clone();
