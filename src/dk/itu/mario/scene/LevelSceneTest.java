@@ -72,7 +72,7 @@ import dk.itu.mario.res.ResourcesManager;
 			        	else{
 			        	GamePlay gp = new GamePlay();
 			        	gp = gp.read("player.txt");
-		        		currentLevel = new RandomLevel(320, 15, levelSeed, levelDifficulty,levelType, gp);
+		        		currentLevel = new RandomLevel(320, 15, levelSeed, levelDifficulty,levelType);
 		        		}
 
 		        try {

@@ -11,7 +11,7 @@ import dk.itu.mario.level.MyLevel;
 public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelGenerator{
 
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
-		LevelInterface level = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
+		MyLevel level = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
 		return level;
 	}
 
@@ -26,11 +26,11 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	 * @param currLvl
 	 * @return
 	 */
-	public Level simulatedAnnealing(Level currLvl) {
+	public MyLevel simulatedAnnealing(MyLevel currLvl) {
 		final double KMAX = 25;
 		for (int k = 0; k < KMAX; k++) {
 			final double T = temperature(k/KMAX);
-			Level newLvl = neighbor(currLvl);
+			MyLevel newLvl = neighbor(currLvl);
 			if (acceptanceProbability(currLvl, newLvl, T) > Math.random())
 				currLvl = newLvl;
 		}
@@ -41,13 +41,25 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	/**
 	 * This acts as E(), or the energy/goal function
 	 * The lower the energy, the better the level is
+	 * This gets the energy from the level's energy function
 	 * @param level
 	 * @return
 	 */
-	public double energy(LevelInterface level){
-		//TODO
-		return 0.0;
-	}
+	//compares the gameplay metrics to the metrics of the level
+	    //the higher the difference between metrics, the higher the energy returned
+	    //sums the differences in z scores of each metric
+	    public double energy(MyLevel level){
+	    	return zScore(level, "gaps", level.gaps);
+	    }
+
+	    public double zScore(MyLevel level, String statName, double stat){
+	    	double[] playerBaseline = level.playerThresholds.get(statName);
+	    	double mean = playerBaseline[0];
+	    	double stDev = playerBaseline[1];
+	    	double difference = stat - mean;
+	    	System.out.println(difference);
+	    	return Math.abs(difference);
+	    }
 
 	/**
 	 * annealing schedule function
@@ -62,7 +74,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	 * @param temp
 	 * @return
 	 */
-	public double acceptanceProbability(Level currLvl, Level newLvl, double temp) {
+	public double acceptanceProbability(MyLevel currLvl, MyLevel newLvl, double temp) {
 		if (energy(newLvl) < energy(currLvl))
 			return 1;
 		else
@@ -74,7 +86,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	 * @param s
 	 * @return
 	 */
-	public Level neighbor(Level s) {
+	public MyLevel neighbor(Level s) {
 		//TODO
 		return null;
 	}

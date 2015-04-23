@@ -16,7 +16,9 @@ public class MyLevel extends Level{
 	 public   int BLOCKS_COINS = 0; // the number of coin blocks
 	 public   int BLOCKS_POWER = 0; // the number of power blocks
 	 public   int COINS = 0; //These are the coins in boxes that Mario collect
-	 public   Map<String, int[]> thresholds = new HashMap<String, int[]>();
+	 public   int gaps;
+	 public   Map<String, double[]> playerThresholds = new HashMap<String, double[]>();
+	 public   Map<String, double[]> mapThresholds = new HashMap<String, double[]>();
  
 	private static Random levelSeedRandom = new Random();
 	    public static long lastSeed;
@@ -26,7 +28,6 @@ public class MyLevel extends Level{
   
 	    private int difficulty;
 	    private int type;
-		private int gaps;
 		private double totalDeaths;
 		private double totalKills;
 
@@ -46,7 +47,7 @@ public class MyLevel extends Level{
 	        creat(seed, difficulty, type);
 	    }
 
-	    //adds all of our metric thresholds
+	    //adds all of our metric playerThresholds
 	    public void initializeThresholds(){
 
 	    	totalDeaths = 
@@ -68,19 +69,27 @@ public class MyLevel extends Level{
 	    		playerMetrics.JumpFlowersKilled +
 	    		playerMetrics.ChompFlowersKilled;
 
-	    	thresholds.put("percentageFireKills", new int[]{30,10});
-	    	thresholds.put("percentageShellKills", new int[]{30,10});
-	    	thresholds.put("percentageBlockDestroyed ", new int[]{30,10});
-	    	thresholds.put("percentageEmptyBlocksDestroyed ", new int[]{30,10});
-	    	thresholds.put("percentagePowerBlocksDestroyed ", new int[]{50,10});
-	    	thresholds.put("percentageGapDeaths", new int[]{20,10});
-	    	thresholds.put("percentageRedTurtleDeaths", new int[]{20,10});
-	    	thresholds.put("percentageGreenTurtleDeaths", new int[]{10,10});
-	    	thresholds.put("percentageGoombaDeaths", new int[]{20,10});
-	    	thresholds.put("percentageJumpFlowerDeaths", new int[]{10,10});
-	    	thresholds.put("percentageCannonBallDeaths", new int[]{10,10});
-	    	thresholds.put("percentageChompFlowerDeaths", new int[]{10,10});
+
+	    	//these are the metrics for our defaults. the first number is a default percentage, the second is standard deviation
+	    	playerThresholds.put("percentageFireKills", new double[]{30,10});
+	    	playerThresholds.put("percentageShellKills", new double[]{30,10});
+	    	playerThresholds.put("percentageBlockDestroyed ", new double[]{30,10});
+	    	playerThresholds.put("percentageEmptyBlocksDestroyed ", new double[]{30,10});
+	    	playerThresholds.put("percentagePowerBlocksDestroyed ", new double[]{50,10});
+	    	playerThresholds.put("percentageGapDeaths", new double[]{20,10});
+	    	playerThresholds.put("percentageRedTurtleDeaths", new double[]{20,10});
+	    	playerThresholds.put("percentageGreenTurtleDeaths", new double[]{10,10});
+	    	playerThresholds.put("percentageGoombaDeaths", new double[]{20,10});
+	    	playerThresholds.put("percentageJumpFlowerDeaths", new double[]{10,10});
+	    	playerThresholds.put("percentageCannonBallDeaths", new double[]{10,10});
+	    	playerThresholds.put("percentageChompFlowerDeaths", new double[]{10,10});
+	    	playerThresholds.put("gaps", new double[]{10,10});
+
+	    	//This is what will initialize the 
+	    	mapThresholds.put("gaps", new double[]{20,2});
 	    }
+
+	    
 
 	    public void creat(long seed, int difficulty, int type)
 	    {
