@@ -15,6 +15,8 @@ public class RandomLevel extends Level{
 	 public   int BLOCKS_COINS = 0; // the number of coin blocks
 	 public   int BLOCKS_POWER = 0; // the number of power blocks
 	 public   int COINS = 0; //These are the coins in boxes that Mario collect
+	 public   int cannons = 0;
+	 public   int jumps = 0;
 
  
 	private static Random levelSeedRandom = new Random();
@@ -53,10 +55,10 @@ public class RandomLevel extends Level{
 	        this.type = type;
 	        this.difficulty = difficulty;
 	        odds[ODDS_STRAIGHT] = 20;
-	        odds[ODDS_HILL_STRAIGHT] = 10;
-	        odds[ODDS_TUBES] = 2 + 1 * difficulty;
-	        odds[ODDS_JUMP] = 2 * difficulty;
-	        odds[ODDS_CANNONS] = -10 + 5 * difficulty;
+	        odds[ODDS_HILL_STRAIGHT] = 20;
+	        odds[ODDS_TUBES] = 20;
+	        odds[ODDS_JUMP] = 20;
+	        odds[ODDS_CANNONS] = 20;
 
 	        if (type != LevelInterface.TYPE_OVERGROUND)
 	        {
@@ -127,6 +129,7 @@ public class RandomLevel extends Level{
 	        }
 
 	        fixWalls();
+			System.out.println("Enemies: " + ENEMIES + " Gaps: " + gaps + " Cannons:" + cannons);
 
 	    }
 
@@ -152,11 +155,13 @@ public class RandomLevel extends Level{
 	            case ODDS_TUBES:
 	                return buildTubes(x, maxLength);
 	            case ODDS_JUMP:
-	            	if (gaps < Constraints.gaps)
-	            		return buildJump(x, maxLength);
+	            	if (gaps < Constraints.gaps) {
+						return buildJump(x, maxLength);
+					}
 	            	else
 	            		return buildStraight(x, maxLength, false);
 	            case ODDS_CANNONS:
+					cannons++;
 	                return buildCannons(x, maxLength);
 	        }
 	        return 0;
