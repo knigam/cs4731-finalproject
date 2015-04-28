@@ -32,6 +32,13 @@ public class MyLevel extends Level{
 		private double totalKills;
 
 		private GamePlay playerMetrics;
+		private static final int ODDS_STRAIGHT = 0;
+		private static final int ODDS_HILL_STRAIGHT = 1;
+		private static final int ODDS_TUBES = 2;
+		private static final int ODDS_JUMP = 3;
+		private static final int ODDS_CANNONS = 4;
+
+		private int[] odds;
 		
 		public MyLevel(int width, int height)
 	    {
@@ -46,6 +53,13 @@ public class MyLevel extends Level{
 	        initializeThresholds();
 	        creat(seed, difficulty, type);
 	    }
+
+		public MyLevel(int width, int height, long seed, int difficulty, int type, GamePlay playerMetrics, int[] odds){
+			this(width, height, seed, difficulty, type, playerMetrics);
+			this.odds = odds;
+			initializeThresholds();
+			creat(seed, difficulty, type);
+		}
 
 	    //adds all of our metric playerThresholds
 	    public void initializeThresholds(){
