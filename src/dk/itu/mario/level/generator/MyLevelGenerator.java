@@ -17,7 +17,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
 		this.playerMetrics = playerMetrics;
-		System.out.println(this.playerMetrics.timesOfDeathByJumpFlower);
+		System.out.println(this.playerMetrics.timesOfDeathByGoomba);
 		baselineDeaths(playerMetrics);
 		playerStats(playerMetrics);
 		MyLevel level = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
@@ -51,7 +51,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		double percentGapDeaths = playerMetrics.timesOfDeathByFallingIntoGap/totalDeaths;
 		double percentCannonDeaths = playerMetrics.timesOfDeathByCannonBall/totalDeaths;
 
-		System.out.println("Player Death Stats Percentages:" +playerMetrics.timesOfDeathByFallingIntoGap);
+		System.out.println("Player Death Stats Percentages:" +totalDeaths);
 		System.out.println("chomp: "+percentChompDeaths+" gaps: "+percentGapDeaths+" cannons: "+percentCannonDeaths);
 
 		playerDeathPercentages = new double[] {percentChompDeaths, percentGapDeaths, percentCannonDeaths};
@@ -95,9 +95,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	    }
 
 	    public double zScore(MyLevel level, int statID, double stat){
-	    	double[] playerBaseline = baselineDeathPercentages[statID];
-	    	double mean = playerBaseline[0];
-	    	double stDev = playerBaseline[1];
+	    	double mean = playerDeathPercentages[statID];
 	    	double difference = stat - mean;
 	    	return Math.abs(difference);
 	    }
