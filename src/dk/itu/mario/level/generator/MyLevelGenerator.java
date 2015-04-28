@@ -88,9 +88,10 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	    public double energy(MyLevel level){
 	    	int energy = 0;
 	    	int[] buildPercentages = level.getBuildPercentages();
-	    	for (int x = 0; x < buildPercentages.length-2; x++){
-	    		energy += zScore(level, x, level.getBuildPercentages()[x]);
-	    	}
+	    	// for (int x = 0; x < buildPercentages.length-2; x++){
+	    	// 	energy += zScore(level, x, level.getBuildPercentages()[x]);
+	    	// }
+	    	energy = zScore(level, 1, level.getBuildPercentages()[1]);
 	    	return energy;
 	    }
 
