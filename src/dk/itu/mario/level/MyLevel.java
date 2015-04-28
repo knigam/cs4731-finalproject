@@ -17,6 +17,7 @@ public class MyLevel extends Level{
 	public   int BLOCKS_POWER = 0; // the number of power blocks
 	public   int COINS = 0; //These are the coins in boxes that Mario collect
 	public   int gaps;
+	public	 int cannons;
 	public   Map<String, double[]> playerThresholds = new HashMap<String, double[]>();
 	public   Map<String, double[]> mapThresholds = new HashMap<String, double[]>();
 
@@ -44,6 +45,14 @@ public class MyLevel extends Level{
 
 	public void setOdds(int[] odds) {
 		this.odds = odds;
+		int sum = 0;
+		for(int x: odds){
+			System.out.println(x);
+			sum+= x;
+		}
+		//System.out.println(odds[3]);
+		System.out.println("Sum"+sum);
+		System.out.println("\n");
 	}
 
 	private int[] odds = new int[]{20,20,20,20,20};
@@ -51,6 +60,7 @@ public class MyLevel extends Level{
 	public MyLevel(int width, int height)
 	{
 		super(width, height);
+		cannons = 0;
 	}
 
 
@@ -106,6 +116,7 @@ public class MyLevel extends Level{
 		playerThresholds.put("percentageCannonBallDeaths", new double[]{10,10});
 		playerThresholds.put("percentageChompFlowerDeaths", new double[]{10,10});
 		playerThresholds.put("gaps", new double[]{10,10});
+		playerThresholds.put("cannons", new double[]{20,10});
 
 		//This is what will initialize the
 		mapThresholds.put("gaps", new double[]{20,2});
@@ -116,21 +127,21 @@ public class MyLevel extends Level{
 		this.type = type;
 		this.difficulty = difficulty;
 
-		if (type != LevelInterface.TYPE_OVERGROUND)
-		{
-			odds[ODDS_HILL_STRAIGHT] = 0;
-		}
+		// if (type != LevelInterface.TYPE_OVERGROUND)
+		// {
+		// 	odds[ODDS_HILL_STRAIGHT] = 0;
+		// }
 
-		for (int i = 0; i < odds.length; i++)
-		{
-			//failsafe (no negative odds)
-			if (odds[i] < 0){
-				odds[i] = 0;
-			}
+		// for (int i = 0; i < odds.length; i++)
+		// {
+		// 	//failsafe (no negative odds)
+		// 	if (odds[i] < 0){
+		// 		odds[i] = 0;
+		// 	}
 
-			totalOdds += odds[i];
-			odds[i] = totalOdds - odds[i];
-		}
+		// 	totalOdds += odds[i];
+		// 	odds[i] = totalOdds - odds[i];
+		// }
 
 		lastSeed = seed;
 		random = new Random(seed);
@@ -214,8 +225,10 @@ public class MyLevel extends Level{
 				}
 				else
 					return buildStraight(x, maxLength, false);
-			case ODDS_CANNONS:
+			case ODDS_CANNONS:{
+				cannons++;
 				return buildCannons(x, maxLength);
+			}
 		}
 		return 0;
 	}

@@ -12,7 +12,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
 		MyLevel level = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
-		return level;
+		return simulatedAnnealing(level);
 	}
 
 	@Override
@@ -57,7 +57,6 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	    	double mean = playerBaseline[0];
 	    	double stDev = playerBaseline[1];
 	    	double difference = stat - mean;
-	    	System.out.println(difference);
 	    	return Math.abs(difference);
 	    }
 
