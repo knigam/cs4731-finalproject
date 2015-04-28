@@ -70,7 +70,8 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 
 	/**
 	 * This acts as P(), the acceptance probability function
-	 * @param curr
+	 * @param currLvl
+	 * @param newLvl
 	 * @param temp
 	 * @return
 	 */
@@ -86,9 +87,20 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	 * @param s
 	 * @return
 	 */
-	public MyLevel neighbor(Level s) {
+	public MyLevel neighbor(MyLevel s) {
 		//TODO
-		return null;
+		Random rand = new Random();
+		int[] odds = s.getOdds();
+		int first = 0;
+		int second = 0;
+		while (first == second || odds[second] < 3) {
+			first = rand.nextInt(odds.length);
+			second = rand.nextInt(odds.length);
+		}
+		odds[first] += 2;
+		odds[second] -= 2;
+		s.setOdds(odds);
+		return s;
 	}
 
 }
