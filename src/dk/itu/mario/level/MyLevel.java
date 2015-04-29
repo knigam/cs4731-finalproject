@@ -59,7 +59,9 @@ public class MyLevel extends Level{
 	    {
 	        this(width, height);
 	        this.buildPercentages = buildPercentages;
+	        System.out.println("a");
 	        creat(seed, difficulty, type);
+	        System.out.println("b");
 	    }
 
 	    public int[] getBuildPercentages(){
@@ -76,17 +78,20 @@ public class MyLevel extends Level{
 	    	maxTubes = buildPercentages[2]*maxLength/100;
 	    	maxJumps = buildPercentages[3]*maxLength/100;
 	    	maxCannons = buildPercentages[4]*maxLength/100;
+	    	if (type != LevelInterface.TYPE_OVERGROUND){
+	    		maxStraight += maxHills;
+	    	}
 	    }
 
+	    public void creat(){
+	    	this.creat(random.nextLong(), this.difficulty, this.type);
+	    }
 
 	    public void creat(long seed, int difficulty, int type)
 	    {
 	        this.type = type;
 	        this.difficulty = difficulty;
 
-	        for(int x: buildPercentages)
-	        	System.out.println(x);
-	        System.out.println("................");
 
 	        lastSeed = seed;
 	        random = new Random(seed);
@@ -151,13 +156,14 @@ public class MyLevel extends Level{
 	    {
 	        int t = random.nextInt(5);
 	        int length = 0;
+	       // System.out.println(maxLength);
 
 	        switch (t)
 	        {
 	            case ODDS_STRAIGHT:
-	            	if(maxStraight >0){
-	                	length = buildStraight(x, maxLength, false);
-	                	maxStraight -= length;
+	            	if(maxStraight  >0){
+	                	length = buildStraight(x, maxStraight, false);
+	                	//maxStraight -= length;
 	                	return length;
 	                }
 	                else
@@ -165,7 +171,7 @@ public class MyLevel extends Level{
 	            case ODDS_HILL_STRAIGHT:
 	            	if(maxHills >0){
 			            if (type != LevelInterface.TYPE_OVERGROUND){
-				            length = buildHillStraight(x, maxLength);
+				            length = buildHillStraight(x, maxHills);
 				            maxHills -= length;
 				            return length;
 						}
@@ -174,7 +180,7 @@ public class MyLevel extends Level{
 	                	break;
 	            case ODDS_TUBES:
 	            	if(maxTubes>0){
-	                	length = buildTubes(x, maxLength);
+	                	length = buildTubes(x, maxTubes);
 	                	maxTubes -= length;
 	                	return length;
                 	}	
@@ -182,7 +188,7 @@ public class MyLevel extends Level{
 	                	break;
 	            case ODDS_JUMP:
 	            	if (maxJumps >0){
-						length = buildJump(x, maxLength);
+						length = buildJump(x, maxJumps);
 						maxJumps -= length;
 						return length;
 					}
@@ -190,7 +196,7 @@ public class MyLevel extends Level{
 	                	break;
 	            case ODDS_CANNONS:
 	            	if(maxCannons > 0){
-	                	length = buildCannons(x, maxLength);
+	                	length = buildCannons(x, maxCannons);
 	                	maxCannons -= length;
 	                	return length;
 	                }
@@ -208,6 +214,7 @@ public class MyLevel extends Level{
 	        int js = random.nextInt(4) + 2;
 	        int jl = random.nextInt(2) + 2;
 	        int length = js * 2 + jl;
+	        if(length > maxLength) length = maxLength;
 
 	        boolean hasStairs = random.nextInt(3) == 0;
 

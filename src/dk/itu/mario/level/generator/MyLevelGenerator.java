@@ -17,7 +17,6 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
 		this.playerMetrics = playerMetrics;
-		System.out.println(this.playerMetrics.timesOfDeathByGoomba);
 		baselineDeaths(playerMetrics);
 		playerStats(playerMetrics);
 		MyLevel level = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics);
@@ -31,8 +30,9 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	}
 
 	//establishes our baseline death percentages and standard deviations to compare against
+	//chomps, gaps, cannons
 	public void baselineDeaths(GamePlay playerMetrics){
-		baselineDeathPercentages = new double[][] {{10,1},{10,1},{10,1}};
+		baselineDeathPercentages = new double[][] {{30,33},{30,33},{30,33}};
 	}
 
 	//computes percentages from the relevant player stats: chomps, gaps, cannons
@@ -62,14 +62,26 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	 * Runs simulatedAnnealing to find the best level
 	 * @param currLvl
 	 * @return
-	 */
+	 */	
 	public MyLevel simulatedAnnealing(MyLevel currLvl) {
-		final double KMAX = 25;
+		final double KMAX = 200;
 		for (int k = 0; k < KMAX; k++) {
-			final double T = temperature(k/KMAX);
+			double T = temperature(k/KMAX);
+			System.out.println("K: "+k);
+			System.out.println("Temperature "+T);
 			MyLevel newLvl = neighbor(currLvl, k);
-			if (acceptanceProbability(currLvl, newLvl, T) > Math.random())
+			double aP = acceptanceProbability(currLvl, newLvl, T);
+			System.out.println("AP: "+aP);
+			if (aP> Math.random()){
+
+				 for(int x: currLvl.getBuildPercentages())
+		        	System.out.println(x);
+		        System.out.println("................");
+
+				if(acceptanceProbability(currLvl, newLvl, T) != 1)
+					System.out.println("move down");
 				currLvl = newLvl;
+			}
 		}
 
 		return currLvl;
@@ -86,19 +98,19 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	    //the higher the difference between metrics, the higher the energy returned
 	    //sums the differences in z scores of each metric
 	    public double energy(MyLevel level){
-	    	int energy = 0;
+	    	double energy = 0;
 	    	int[] buildPercentages = level.getBuildPercentages();
 	    	// for (int x = 0; x < buildPercentages.length-2; x++){
-	    	// 	energy += zScore(level, x, level.getBuildPercentages()[x]);
+	    	// 	energy += zScore(level, x+2, playerDeathPercentages[x]);
 	    	// }
-	    	energy = zScore(level, 1, level.getBuildPercentages()[1]);
+	    	energy = zScore(level, 1, buildPercentages[1]);
 	    	return energy;
 	    }
 
 	    public double zScore(MyLevel level, int statID, double stat){
-	    	double mean = playerDeathPercentages[statID];
-	    	double difference = stat - mean;
-	    	return Math.abs(difference);
+	    	double difference = stat - baselineDeathPercentages[1][0];
+	    	double zScore = difference/baselineDeathPercentages[1][1];
+	    	return zScore;
 	    }
 
 	/**
@@ -116,9 +128,11 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	 * @return
 	 */
 	public double acceptanceProbability(MyLevel currLvl, MyLevel newLvl, double temp) {
+		System.out.println(energy(newLvl) +", "+energy(currLvl));
 		if (energy(newLvl) < energy(currLvl))
 			return 1;
 		else
+			//return 0;
 			return Math.exp(-1 * (energy(newLvl)- energy(currLvl))/temp);
 	}
 
@@ -127,25 +141,27 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	 * @param s
 	 * @return
 	 */
-	public MyLevel neighbor(MyLevel s, int iteration) {
+	public MyLevel neighbor(MyLevel s, double T) {
 		//TODO
 		Random rand = new Random();
-		int[] buildPercentages = s.getBuildPercentages();
+		int[] buildPercentages = new int[5];
+		for(int x = 0; x < 5; x++){
+			buildPercentages[x] = s.getBuildPercentages()[x];
+		}
+
+		//int[] buildPercentages = s.getBuildPercentages();
 		int first = 0;
 		int second = 0;
-		while (first == second) {
-			first = rand.nextInt(3)+2;
-			second = rand.nextInt(2);
-		}
-		if(iteration%2 == 0){
+		do {
+			while (first == second || buildPercentages[second] < 3) {
+				first = rand.nextInt(5);
+				second = rand.nextInt(5);
+			}
 			buildPercentages[first] += 2;
 			buildPercentages[second] -= 2;
-		}
-		else{
-			buildPercentages[first] -= 2;
-			buildPercentages[second] += 2;
-		}
-		return new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics, buildPercentages);
+			MyLevel newlvl = new MyLevel(320,15,new Random().nextLong(),1,LevelInterface.TYPE_OVERGROUND,playerMetrics, buildPercentages);
+		} while(energy(newLvl) - energy(s) < T))
+		return newLvl;
 	}
 
 }
