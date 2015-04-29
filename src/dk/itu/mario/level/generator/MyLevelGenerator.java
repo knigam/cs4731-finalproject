@@ -13,6 +13,8 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	private double totalDeaths;
 	private double [] playerDeathPercentages;
 	public double [][] baselineDeathPercentages;
+	public double playerDeathZscore = 0.0;
+	public double [][] baselineBuildPercentages;
 	private GamePlay playerMetrics;
 
 	public LevelInterface generateLevel(GamePlay playerMetrics) {
@@ -32,7 +34,8 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	//establishes our baseline death percentages and standard deviations to compare against
 	//chomps, gaps, cannons
 	public void baselineDeaths(GamePlay playerMetrics){
-		baselineDeathPercentages = new double[][] {{15, 20},{15, 20},{15,20},{15,20},{15,20}};
+		baselineDeathPercentages = new double[][] {{25, 1},{25,1},{25,1}};
+		baselineBuildPercentages = new double[][] {{7,1},{7,1},{7,1}};
 	}
 
 	//computes percentages from the relevant player stats: chomps, gaps, cannons
@@ -55,6 +58,11 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		System.out.println("chomp: "+percentChompDeaths+" gaps: "+percentGapDeaths+" cannons: "+percentCannonDeaths);
 
 		playerDeathPercentages = new double[] {percentChompDeaths, percentGapDeaths, percentCannonDeaths};
+		//TODO set player death zscore
+		for(int i = 0; i < baselineDeathPercentages.length; i++) {
+			double difference = playerDeathPercentages[i] * 100 - baselineDeathPercentages[i][0];
+			playerDeathZscore += difference / baselineDeathPercentages[i][1];
+		}
 	}
 
 
@@ -64,7 +72,7 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	 * @return
 	 */	
 	public MyLevel simulatedAnnealing(MyLevel currLvl) {
-		final double KMAX = 100;
+		final double KMAX = 500;
 		for (int k = 1; k < KMAX; k++) {
 			double T = temperature(k/KMAX);
 			System.out.println("K: "+k);
@@ -100,17 +108,16 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 	    public double energy(MyLevel level){
 	    	double energy = 0;
 	    	int[] buildPercentages = level.getBuildPercentages();
-	    	 for (int x = 2; x < buildPercentages.length; x++){
-	    	 	energy += zScore(level, x-2, buildPercentages[x]);
+	    	 for (int x = 0; x < buildPercentages.length-2; x++){
+	    	 	energy += zScore(level, x, buildPercentages[x+2]);
 	    	 }
 	    	//energy = zScore(level, 1, buildPercentages[1]);
-	    	return energy;
+			energy -= playerDeathZscore;
+	    	return Math.abs(energy);
 	    }
 
 	    public double zScore(MyLevel level, int statID, double stat){
-	    	double difference = stat - baselineDeathPercentages[statID][0];
-	    	double zScore = difference/baselineDeathPercentages[statID][1];
-	    	return zScore;
+			return Math.abs(stat - baselineBuildPercentages[statID][0])/baselineBuildPercentages[statID][1];
 	    }
 
 	/**
@@ -153,12 +160,12 @@ public class MyLevelGenerator extends CustomizedLevelGenerator implements LevelG
 		int first = 0;
 		int second = 0;
 		for(int i = (int)Math.max(T/5, 1); i > 0; i--) {
-			while (first == second || buildPercentages[second] < 6) {
+			while (first == second || buildPercentages[second] < 2) {
 				first = rand.nextInt(5);
 				second = rand.nextInt(5);
 			}
-			buildPercentages[first] += 5;
-			buildPercentages[second] -= 5;
+			buildPercentages[first] += 1;
+			buildPercentages[second] -= 1;
 			MyLevel newLvl = new MyLevel(320, 15, new Random().nextLong(), 1, LevelInterface.TYPE_OVERGROUND, playerMetrics);
 			newLvl.setBuildPercentages(buildPercentages);
 			if (i == 1)
