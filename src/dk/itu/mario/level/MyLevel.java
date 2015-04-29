@@ -55,14 +55,14 @@ public class MyLevel extends Level{
 	        creat(seed, difficulty, type);
 	    }
 
-	    public MyLevel(int width, int height, long seed, int difficulty, int type, GamePlay playerMetrics, int[] buildPercentages)
-	    {
-	        this(width, height);
-	        this.buildPercentages = buildPercentages;
-	        System.out.println("a");
-	        creat(seed, difficulty, type);
-	        System.out.println("b");
-	    }
+//	    public MyLevel(int width, int height, long seed, int difficulty, int type, GamePlay playerMetrics, int[] buildPercentages)
+//	    {
+//	        this(width, height);
+//	        this.buildPercentages = buildPercentages;
+//	        System.out.println("a");
+//	        creat(seed, difficulty, type);
+//	        System.out.println("b");
+//	    }
 
 	    public int[] getBuildPercentages(){
 	    	return buildPercentages;
